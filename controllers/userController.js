@@ -47,8 +47,32 @@ const Register =async (req, res) =>{
 
 
 //login controller
+const loginct = async (req, res)=>{
+  const Iuser = new user({
+    email: req.body.email,
+    password: req.body.password,
+  });
 
+  if(!Iuser.email && !Iuser.password) return res.status(400).send("enter credentials");
+  
+  try {
+    const OldUser = await user.findOne({ email:Iuser.email}).select("+password");
+    if(!OldUser) return res.status(201).send("Invalid Credentials");
+    
+    //matching pass 
+    const cmp = bcrypt.compare(Iuser.password, OldUser.password);
+      if(!cmp) return res.status(201).send("Invalid Credentials");
+
+      const token = jwt.sign({ email: OldUser.email, id: OldUser._id, role:OldUser.role }, process.env.SECRET_KEY, { expiresIn: "1h" });
+      return res.status(200).send(token);
+   
+}catch(error){
+  console.log(error);
+  res.status(500).send("Somthing went wrong");
+}
+}
 
 export default {
     Register,
+    loginct,
 }

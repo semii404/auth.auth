@@ -1,11 +1,12 @@
-import express, { json } from 'express';
-import mongoose from 'mongoose';
+import express from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors'
 //db config inport
 import DB from './config/db';
 
 
 const app = express();
+app.use(cors());
 dotenv.config();
 
 app.use(express.json());
@@ -17,6 +18,7 @@ import userMGMT from './Routes/UMroutes';
 import sRoutes from './Routes/simpleRoutes'
 
 app.use("/", userMGMT.REG)
+
 
 
 

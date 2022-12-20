@@ -4,6 +4,7 @@ const userhandle = express.Router();
 
 
 const REG = userhandle.post("/register", user_controller.Register);
+const LOGIN = userhandle.post("/login", user_controller.loginct);
 
 
 
