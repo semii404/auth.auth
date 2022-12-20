@@ -1,9 +1,8 @@
-import  Jwt  from "jsonwebtoken";
+import  jwt  from "jsonwebtoken";
 import users from '../models/user.models'
 
-
-const SECRET_KEY = 'secret';
-
+import dotenv from 'dotenv';
+dotenv.config();
 
 
 
@@ -18,7 +17,8 @@ const verifyToken = (req, res, next) => {
     }
   
     // Verify the token using the secret key
-    jwt.verify(token, SECRET_KEY, (err, decoded) => {
+      
+    jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
       if (err) {
         return res.status(401).send({
           message: 'Token is not valid'

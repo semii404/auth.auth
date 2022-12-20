@@ -6,12 +6,10 @@ const FreeRoutes = express.Router();
 import sController from '../controllers/simple';
 
 //simple route data
-const home = FreeRoutes.get("/",  sController.hello);
+ FreeRoutes.get("/",  sController.hello);
 
 
 
 
 
-export default {
-    home,
-};
+export default FreeRoutes;
