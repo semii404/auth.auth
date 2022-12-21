@@ -55,9 +55,7 @@ const loginct = async (req, res)=>{
     password: req.body.password,
   });
 
-  if(Iuser.email===undefined || Iuser.password === undefined ) return res.status(400).send("enter credentials");
-  if(Iuser.email=== null || Iuser.password === null ) return res.status(400).send("enter credentials");
-  
+  if(!Iuser.password || !Iuser.email ) return res.status(201).send("Invaild arguments please enter creadentials");
   try {
     const OldUser = await user.findOne({ email:Iuser.email}).select("+password");
     if(!OldUser) return res.status(201).send("Invalid Credentials");
@@ -65,9 +63,13 @@ const loginct = async (req, res)=>{
     //matching pass 
     const cmp =await bcrypt.compare(Iuser.password, OldUser.password);
       if(!cmp) return res.status(201).send("Invalid Credentials");
-      
+
       const token = jwt.sign({ email: OldUser.email, id: OldUser._id, role:OldUser.role }, process.env.SECRET_KEY, { expiresIn: "1h" });
-      return res.status(200).send(token);
+      return res.status(200).cookie("x-access-token", token,
+        {
+          httpOnly: true,
+          Secure:true
+        }).send("login successfull");
 
     }catch(error){
       console.log(error);

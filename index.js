@@ -6,11 +6,11 @@ import DB from './config/db';
 
 
 const app = express();
-app.use(cors());
+
 dotenv.config();
 
 app.use(express.json());
-
+app.use(cors());
 //db connection
 DB.conn1();
 //import routes
